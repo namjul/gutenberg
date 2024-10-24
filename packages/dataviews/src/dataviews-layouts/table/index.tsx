@@ -40,6 +40,8 @@ interface TableColumnFieldProps< Item > {
 	primaryField?: NormalizedField< Item >;
 	field: NormalizedField< Item >;
 	item: Item;
+	parent?: string;
+	level?: number;
 }
 
 interface TableColumnCombinedProps< Item > {
@@ -54,6 +56,8 @@ interface TableColumnProps< Item > {
 	primaryField?: NormalizedField< Item >;
 	fields: NormalizedField< Item >[];
 	item: Item;
+	parent?: string;
+	level?: number;
 	column: string;
 	view: ViewTableType;
 }
@@ -61,6 +65,8 @@ interface TableColumnProps< Item > {
 interface TableRowProps< Item > {
 	hasBulkActions: boolean;
 	item: Item;
+	parent?: string;
+	level?: number;
 	actions: Action< Item >[];
 	fields: NormalizedField< Item >[];
 	id: string;
@@ -100,17 +106,27 @@ function TableColumn< Item >( {
 
 function TableColumnField< Item >( {
 	primaryField,
+	parent,
+	level,
 	item,
 	field,
 }: TableColumnFieldProps< Item > ) {
+	const isPrimaryField = primaryField?.id === field.id;
 	return (
 		<div
 			className={ clsx( 'dataviews-view-table__cell-content-wrapper', {
-				'dataviews-view-table__primary-field':
-					primaryField?.id === field.id,
+				'dataviews-view-table__primary-field': isPrimaryField,
 			} ) }
 		>
+			{ isPrimaryField && level !== undefined && (
+				<span className="dataviews-view-table__level">
+					{ '— '.repeat( level ) }
+				</span>
+			) }
 			<field.render { ...{ item } } />
+			{ isPrimaryField && parent && (
+				<span className="dataviews-view-table__parent">{ `Parent: ${ parent }` }</span>
+			) }
 		</div>
 	);
 }
@@ -132,6 +148,8 @@ function TableColumnCombined< Item >( {
 function TableRow< Item >( {
 	hasBulkActions,
 	item,
+	parent,
+	level,
 	actions,
 	fields,
 	id,
@@ -216,6 +234,8 @@ function TableRow< Item >( {
 							primaryField={ primaryField }
 							fields={ fields }
 							item={ item }
+							parent={ parent }
+							level={ level }
 							column={ column }
 							view={ view }
 						/>
@@ -295,6 +315,99 @@ function ViewTable< Item >( {
 	const primaryField = fields.find(
 		( field ) => field.id === view.layout?.primaryField
 	);
+
+	const getPrimaryFieldValue = ( item: Item ) => {
+		return primaryField?.getValue( { item } );
+	};
+
+	const getAllDescendants = (
+		children: Item[][],
+		index: number,
+		levels: number[],
+		levelIndex: number
+	): Item[] => {
+		const nested: Item[] = [];
+
+		if ( children[ index ] ) {
+			children[ index ]?.forEach( ( child: Item ) => {
+				const itemId = +getItemId( child );
+				nested.push( child );
+				levels[ itemId ] = levelIndex;
+				nested.push(
+					...getAllDescendants(
+						children,
+						itemId,
+						levels,
+						levelIndex + 1
+					)
+				);
+			} );
+		}
+
+		return nested;
+	};
+
+	const rows: Item[] = [];
+	const topLevel: Item[] = [];
+	const children: Item[][] = [];
+	const primaryFieldValues: string[] = [];
+	const levels: number[] = [];
+	if ( !! view.layout?.hierarchical ) {
+		const hierarchicalField = view.layout?.hierarchical;
+		data.forEach( ( item: Item ) => {
+			const parentId = ( item as Record< string, number > )[
+				hierarchicalField
+			];
+			if ( parentId === 0 ) {
+				topLevel[ +getItemId( item ) ] = item;
+				primaryFieldValues[ +getItemId( item ) ] =
+					getPrimaryFieldValue( item );
+			} else {
+				if ( ! children[ parentId ] ) {
+					children[ parentId ] = [];
+				}
+				children[ parentId ].push( item );
+				primaryFieldValues[ +getItemId( item ) ] =
+					getPrimaryFieldValue( item );
+			}
+		} );
+
+		topLevel.forEach( ( item, index ) => {
+			rows.push( item );
+			levels[ index ] = 0;
+			rows.push( ...getAllDescendants( children, index, levels, 1 ) );
+		} );
+	} else {
+		rows.push( ...data );
+	}
+
+	const getItemLevel = ( item: Item ) => {
+		if ( ! view.layout?.hierarchical ) {
+			return;
+		}
+
+		return levels[ +getItemId( item ) ];
+	};
+
+	const getItemParent = ( item: Item ) => {
+		if ( ! view.layout?.hierarchical ) {
+			return;
+		}
+
+		const parent = ( item as Record< string, any > )?.[
+			view.layout?.hierarchical
+		];
+
+		if ( parent === 0 ) {
+			return;
+		}
+
+		if ( ! primaryFieldValues[ parent ] ) {
+			return;
+		}
+
+		return primaryFieldValues[ parent ];
+	};
 
 	return (
 		<>
@@ -379,10 +492,12 @@ function ViewTable< Item >( {
 				</thead>
 				<tbody>
 					{ hasData &&
-						data.map( ( item, index ) => (
+						rows.map( ( item, index ) => (
 							<TableRow
 								key={ getItemId( item ) }
 								item={ item }
+								parent={ getItemParent( item ) }
+								level={ getItemLevel( item ) }
 								hasBulkActions={ hasBulkActions }
 								actions={ actions }
 								fields={ fields }

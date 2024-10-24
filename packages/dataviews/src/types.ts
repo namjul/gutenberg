@@ -342,6 +342,11 @@ export interface ViewTable extends ViewBase {
 		 * The styles for the columns.
 		 */
 		styles?: Record< string, ColumnStyle >;
+
+		/**
+		 * The field to visualize hierarchical data.
+		 */
+		hierarchical?: string;
 	};
 }
 

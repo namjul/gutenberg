@@ -151,7 +151,7 @@ function usePostFields( viewType ) {
 		() => [
 			featuredImageField,
 			{
-				id: 'id',
+				id: 'id', // TODO: remove field
 				label: __( 'ID' ),
 				type: 'integer',
 			},
