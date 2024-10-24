@@ -151,6 +151,16 @@ function usePostFields( viewType ) {
 		() => [
 			featuredImageField,
 			{
+				id: 'id',
+				label: __( 'ID' ),
+				type: 'integer',
+			},
+			{
+				id: 'parent',
+				label: __( 'Parent' ),
+				type: 'integer',
+			},
+			{
 				label: __( 'Title' ),
 				id: 'title',
 				type: 'text',
