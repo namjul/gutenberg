@@ -571,6 +571,10 @@ export const getAutosave =
 export const __experimentalGetTemplateForLink =
 	( link ) =>
 	async ( { dispatch, resolveSelect } ) => {
+		if ( ! link ) {
+			return;
+		}
+
 		let template;
 		try {
 			// This is NOT calling a REST endpoint but rather ends up with a response from
