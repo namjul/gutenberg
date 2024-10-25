@@ -31,6 +31,8 @@ export const rootEntitiesConfig = [
 				'site_icon_url',
 				'site_logo',
 				'timezone_string',
+				'defaultTemplatePartAreas',
+				'defaultTemplateTypes',
 				'url',
 			].join( ',' ),
 		},
