@@ -23,8 +23,6 @@ import QueryToolbar from './query-toolbar';
 import QueryInspectorControls from './inspector-controls';
 import EnhancedPaginationModal from './enhanced-pagination-modal';
 
-const DEFAULTS_POSTS_PER_PAGE = 3;
-
 const TEMPLATE = [ [ 'core/post-template' ] ];
 export default function QueryContent( {
 	attributes,
@@ -36,11 +34,10 @@ export default function QueryContent( {
 } ) {
 	const {
 		queryId,
-		query,
+		query = {},
 		displayLayout,
 		enhancedPagination,
 		tagName: TagName = 'div',
-		query: { inherit } = {},
 	} = attributes;
 	const { postType } = context;
 	const { __unstableMarkNextChangeAsNotPersistent } =
@@ -60,30 +57,6 @@ export default function QueryContent( {
 		},
 		[ postType ]
 	);
-	const { postsPerPage } = useSelect( ( select ) => {
-		const { getSettings } = select( blockEditorStore );
-		const { getEntityRecord, getEntityRecordEdits, canUser } =
-			select( coreStore );
-		const settingPerPage = canUser( 'read', {
-			kind: 'root',
-			name: 'site',
-		} )
-			? +getEntityRecord( 'root', 'site' )?.posts_per_page
-			: +getSettings().postsPerPage;
-
-		// Gets changes made via the template area posts per page setting. These won't be saved
-		// until the page is saved, but we should reflect this setting within the query loops
-		// that inherit it.
-		const editedSettingPerPage = +getEntityRecordEdits( 'root', 'site' )
-			?.posts_per_page;
-
-		return {
-			postsPerPage:
-				editedSettingPerPage ||
-				settingPerPage ||
-				DEFAULTS_POSTS_PER_PAGE,
-		};
-	}, [] );
 	// There are some effects running where some initialization logic is
 	// happening and setting some values to some attributes (ex. queryId).
 	// These updates can cause an `undo trap` where undoing will result in
@@ -99,13 +72,6 @@ export default function QueryContent( {
 	);
 	useEffect( () => {
 		const newQuery = {};
-		// When we inherit from global query always need to set the `perPage`
-		// based on the reading settings.
-		if ( inherit && query.perPage !== postsPerPage ) {
-			newQuery.perPage = postsPerPage;
-		} else if ( ! query.perPage && postsPerPage ) {
-			newQuery.perPage = postsPerPage;
-		}
 		// We need to reset the `inherit` value if not in a template, as queries
 		// are not inherited when outside a template (e.g. when in singular content).
 		if ( ! isTemplate && query.inherit ) {
@@ -116,9 +82,6 @@ export default function QueryContent( {
 			updateQuery( newQuery );
 		}
 	}, [
-		query.perPage,
-		postsPerPage,
-		inherit,
 		isTemplate,
 		query.inherit,
 		__unstableMarkNextChangeAsNotPersistent,
