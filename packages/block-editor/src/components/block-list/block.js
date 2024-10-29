@@ -339,6 +339,9 @@ const applyWithDispatch = withDispatch( ( dispatch, ownProps, registry ) => {
 			 *                                  to the moved block.
 			 */
 			function moveFirstItemUp( _clientId, changeSelection = true ) {
+				const wrapperBlockName = getBlockName( _clientId );
+				const wrapperBlockType = getBlockType( wrapperBlockName );
+				const isTextualWrapper = wrapperBlockType.category === 'text';
 				const targetRootClientId = getBlockRootClientId( _clientId );
 				const blockOrder = getBlockOrder( _clientId );
 				const [ firstClientId ] = blockOrder;
@@ -348,7 +351,7 @@ const applyWithDispatch = withDispatch( ( dispatch, ownProps, registry ) => {
 					isUnmodifiedBlock( getBlock( firstClientId ) )
 				) {
 					removeBlock( _clientId );
-				} else {
+				} else if ( isTextualWrapper ) {
 					registry.batch( () => {
 						if (
 							canInsertBlockType(
@@ -397,6 +400,8 @@ const applyWithDispatch = withDispatch( ( dispatch, ownProps, registry ) => {
 							removeBlock( _clientId, false );
 						}
 					} );
+				} else {
+					switchToDefaultOrRemove();
 				}
 			}
 
