@@ -24,6 +24,7 @@ import {
 	isReusableBlock,
 	getBlockDefaultClassName,
 	hasBlockSupport,
+	createBlock,
 	store as blocksStore,
 } from '@wordpress/blocks';
 import { withFilters } from '@wordpress/components';
@@ -310,6 +311,7 @@ const applyWithDispatch = withDispatch( ( dispatch, ownProps, registry ) => {
 			function switchToDefaultOrRemove() {
 				const block = getBlock( clientId );
 				const defaultBlockName = getDefaultBlockName();
+				const defaultBlockType = getBlockType( defaultBlockName );
 				if ( getBlockName( clientId ) !== defaultBlockName ) {
 					const replacement = switchToBlockType(
 						block,
@@ -326,6 +328,15 @@ const applyWithDispatch = withDispatch( ( dispatch, ownProps, registry ) => {
 							selectBlock( nextBlockClientId );
 						} );
 					}
+				} else if ( defaultBlockType.merge ) {
+					const attributes = defaultBlockType.merge(
+						{},
+						block.attributes
+					);
+					replaceBlocks(
+						[ clientId ],
+						[ createBlock( defaultBlockName, attributes ) ]
+					);
 				}
 			}
 
