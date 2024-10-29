@@ -24,7 +24,7 @@ import {
 import { Icon, check, published, moreVertical } from '@wordpress/icons';
 import { __, _x } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useEntityProp } from '@wordpress/core-data';
+import { useEntityProp, store as coreStore } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
@@ -209,14 +209,33 @@ export function Comments( {
 						spacing="3"
 					>
 						<CommentBoard thread={ thread } />
+						{ 0 < thread?.reply?.length &&
+							thread.reply.map( ( reply ) => (
+								<VStack
+									key={ reply.id }
+									className="editor-collab-sidebar-panel__child-thread"
+									id={ reply.id }
+									spacing="2"
+								>
+									<CommentBoard
+										thread={ reply }
+										parentThread={ thread }
+									/>
+								</VStack>
+							) ) }
 						{ 'reply' === actionState?.action &&
 							thread.id === actionState?.id && (
-								<HStack
-									alignment="left"
-									spacing="3"
-									justify="flex-start"
-									className="editor-collab-sidebar-panel__user-comment"
+								<VStack
+									className="editor-collab-sidebar-panel__child-thread"
+									spacing="2"
 								>
+									<HStack
+										alignment="left"
+										spacing="3"
+										justify="flex-start"
+									>
+										<CommentAuthorInfo />
+									</HStack>
 									<VStack
 										spacing="3"
 										className="editor-collab-sidebar-panel__comment-field"
@@ -234,22 +253,8 @@ export function Comments( {
 											}
 										/>
 									</VStack>
-								</HStack>
-							) }
-						{ 0 < thread?.reply?.length &&
-							thread.reply.map( ( reply ) => (
-								<VStack
-									key={ reply.id }
-									className="editor-collab-sidebar-panel__child-thread"
-									id={ reply.id }
-									spacing="2"
-								>
-									<CommentBoard
-										thread={ reply }
-										parentThread={ thread }
-									/>
 								</VStack>
-							) ) }
+							) }
 					</VStack>
 				) ) }
 		</>
@@ -321,13 +326,6 @@ function CommentHeader( {
 	onReply,
 	status,
 } ) {
-	const dateSettings = getDateSettings();
-	const [ dateTimeFormat = dateSettings.formats.time ] = useEntityProp(
-		'root',
-		'site',
-		'time_format'
-	);
-
 	const actions = [
 		{
 			title: _x( 'Edit', 'Edit comment' ),
@@ -347,29 +345,15 @@ function CommentHeader( {
 
 	return (
 		<HStack alignment="left" spacing="3" justify="flex-start">
-			<img
-				src={ thread?.author_avatar_urls?.[ 48 ] }
-				className="editor-collab-sidebar-panel__user-avatar"
-				// translators: alt text for user avatar image
-				alt={ __( 'User avatar' ) }
-				width={ 32 }
-				height={ 32 }
+			<CommentAuthorInfo
+				avatar={ thread?.author_avatar_urls?.[ 48 ] }
+				name={ thread?.author_name }
+				date={ thread?.date }
 			/>
-			<VStack spacing="0">
-				<span className="editor-collab-sidebar-panel__user-name">
-					{ thread.author_name }
-				</span>
-				<time
-					dateTime={ format( 'h:i A', thread.date ) }
-					className="editor-collab-sidebar-panel__user-time"
-				>
-					{ dateI18n( dateTimeFormat, thread.date ) }
-				</time>
-			</VStack>
 			<span className="editor-collab-sidebar-panel__comment-status">
 				{ status !== 'approved' && (
 					<HStack alignment="right" justify="flex-end" spacing="0">
-						{ 0 === thread.parent && onResolve && (
+						{ 0 === thread?.parent && onResolve && (
 							<Button
 								label={ _x(
 									'Resolve',
@@ -400,5 +384,60 @@ function CommentHeader( {
 				) }
 			</span>
 		</HStack>
+	);
+}
+
+/**
+ * Render author information for a comment.
+ *
+ * @param {Object} props        - Component properties.
+ * @param {string} props.avatar - URL of the author's avatar.
+ * @param {string} props.name   - Name of the author.
+ * @param {string} props.date   - Date of the comment.
+ *
+ * @return {JSX.Element} The JSX element representing the author's information.
+ */
+function CommentAuthorInfo( { avatar, name, date } ) {
+	const dateSettings = getDateSettings();
+	const [ dateTimeFormat = dateSettings.formats.time ] = useEntityProp(
+		'root',
+		'site',
+		'time_format'
+	);
+
+	const { currentUserAvatar, currentUserName } = useSelect( ( select ) => {
+		const currentUserId = select( coreStore ).getCurrentUser()?.id;
+		const user = select( coreStore ).getUser( currentUserId );
+
+		return {
+			currentUserAvatar: user?.avatar_urls?.[ 48 ],
+			currentUserName: user?.name,
+		};
+	}, [] );
+
+	const currentDate = new Date();
+
+	return (
+		<>
+			<img
+				src={ avatar ?? currentUserAvatar }
+				className="editor-collab-sidebar-panel__user-avatar"
+				// translators: alt text for user avatar image
+				alt={ __( 'User avatar' ) }
+				width={ 32 }
+				height={ 32 }
+			/>
+			<VStack spacing="0">
+				<span className="editor-collab-sidebar-panel__user-name">
+					{ name ?? currentUserName }
+				</span>
+				<time
+					dateTime={ format( 'h:i A', date ?? currentDate ) }
+					className="editor-collab-sidebar-panel__user-time"
+				>
+					{ dateI18n( dateTimeFormat, date ?? currentDate ) }
+				</time>
+			</VStack>
+		</>
 	);
 }
