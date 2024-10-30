@@ -16,21 +16,16 @@ import {
 	TextareaControl,
 	Tooltip,
 } from '@wordpress/components';
-import {
-	dateI18n,
-	format,
-	getSettings as getDateSettings,
-} from '@wordpress/date';
 import { Icon, check, published, moreVertical } from '@wordpress/icons';
 import { __, _x } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useEntityProp, store as coreStore } from '@wordpress/core-data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
 import { sanitizeCommentString } from './utils';
+import CommentAuthorInfo from './comment-author-info';
 
 /**
  * Renders the Comments component.
@@ -384,60 +379,5 @@ function CommentHeader( {
 				) }
 			</span>
 		</HStack>
-	);
-}
-
-/**
- * Render author information for a comment.
- *
- * @param {Object} props        - Component properties.
- * @param {string} props.avatar - URL of the author's avatar.
- * @param {string} props.name   - Name of the author.
- * @param {string} props.date   - Date of the comment.
- *
- * @return {JSX.Element} The JSX element representing the author's information.
- */
-function CommentAuthorInfo( { avatar, name, date } ) {
-	const dateSettings = getDateSettings();
-	const [ dateTimeFormat = dateSettings.formats.time ] = useEntityProp(
-		'root',
-		'site',
-		'time_format'
-	);
-
-	const { currentUserAvatar, currentUserName } = useSelect( ( select ) => {
-		const currentUserId = select( coreStore ).getCurrentUser()?.id;
-		const user = select( coreStore ).getUser( currentUserId );
-
-		return {
-			currentUserAvatar: user?.avatar_urls?.[ 48 ],
-			currentUserName: user?.name,
-		};
-	}, [] );
-
-	const currentDate = new Date();
-
-	return (
-		<>
-			<img
-				src={ avatar ?? currentUserAvatar }
-				className="editor-collab-sidebar-panel__user-avatar"
-				// translators: alt text for user avatar image
-				alt={ __( 'User avatar' ) }
-				width={ 32 }
-				height={ 32 }
-			/>
-			<VStack spacing="0">
-				<span className="editor-collab-sidebar-panel__user-name">
-					{ name ?? currentUserName }
-				</span>
-				<time
-					dateTime={ format( 'h:i A', date ?? currentDate ) }
-					className="editor-collab-sidebar-panel__user-time"
-				>
-					{ dateI18n( dateTimeFormat, date ?? currentDate ) }
-				</time>
-			</VStack>
-		</>
 	);
 }
