@@ -19,16 +19,19 @@
 
 ### Experimental
 
+-   `Tabs`: remove internal custom logic ([#66097](https://github.com/WordPress/gutenberg/pull/66097)).
 -   `Tabs`: add props to control active tab item ([#66223](https://github.com/WordPress/gutenberg/pull/66223)).
 -   `Tabs`: restore vertical alignent for tabs content ([#66215](https://github.com/WordPress/gutenberg/pull/66215)).
 -   `Tabs`: fix indicator animation ([#66198](https://github.com/WordPress/gutenberg/pull/66198)).
 -   `Tabs`: update indicator more reactively ([#66207](https://github.com/WordPress/gutenberg/pull/66207)).
 -   `Tabs` and `TabPanel`: Fix arrow key navigation in RTL ([#66201](https://github.com/WordPress/gutenberg/pull/66201)).
 -   `Tabs`: override tablist's tabindex only when necessary ([#66209](https://github.com/WordPress/gutenberg/pull/66209)).
+-   `DropdownMenuV2`: rename to `Menu` ([#66289](https://github.com/WordPress/gutenberg/pull/66289)).
 
 ### Internal
 
 -   ESLint: Stop disabling `react-hooks/exhaustive-deps` rule ([#66324](https://github.com/WordPress/gutenberg/pull/66324)).
+-   `TabPanel`: Add 40px size prop to tab Button ([#66557](https://github.com/WordPress/gutenberg/pull/66557)).
 
 ## 28.10.0 (2024-10-16)
 
