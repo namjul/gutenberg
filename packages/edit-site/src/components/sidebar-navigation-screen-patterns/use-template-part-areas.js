@@ -43,7 +43,7 @@ const useTemplatePartsGroupedByArea = ( items ) => {
 		const key = accumulator[ item.area ]
 			? item.area
 			: TEMPLATE_PART_AREA_DEFAULT_CATEGORY;
-		accumulator[ key ].templateParts.push( item );
+		accumulator[ key ]?.templateParts?.push( item );
 		return accumulator;
 	}, knownAreas );
 
