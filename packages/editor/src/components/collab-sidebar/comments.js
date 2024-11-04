@@ -13,7 +13,6 @@ import {
 	__experimentalConfirmDialog as ConfirmDialog,
 	Button,
 	DropdownMenu,
-	TextareaControl,
 	Tooltip,
 } from '@wordpress/components';
 import { Icon, check, published, moreVertical } from '@wordpress/icons';
@@ -24,8 +23,8 @@ import { store as blockEditorStore } from '@wordpress/block-editor';
 /**
  * Internal dependencies
  */
-import { sanitizeCommentString } from './utils';
 import CommentAuthorInfo from './comment-author-info';
+import CommentForm from './comment-form';
 
 /**
  * Renders the Comments component.
@@ -122,6 +121,7 @@ export function Comments( {
 									} }
 									onCancel={ () => setActionState( false ) }
 									thread={ thread }
+									submitButtonText={ _x( 'Update', 'verb' ) }
 								/>
 							) }
 						{ ( ! actionState ||
@@ -246,57 +246,16 @@ export function Comments( {
 											onCancel={ () =>
 												setActionState( false )
 											}
+											submitButtonText={ _x(
+												'Reply',
+												'Add reply comment'
+											) }
 										/>
 									</VStack>
 								</VStack>
 							) }
 					</VStack>
 				) ) }
-		</>
-	);
-}
-
-/**
- * EditComment component.
- *
- * @param {Object}   props          - The component props.
- * @param {Function} props.onSubmit - The function to call when updating the comment.
- * @param {Function} props.onCancel - The function to call when canceling the comment update.
- * @param {Object}   props.thread   - The comment thread object.
- * @return {JSX.Element} The CommentForm component.
- */
-function CommentForm( { onSubmit, onCancel, thread } ) {
-	const [ inputComment, setInputComment ] = useState(
-		thread?.content?.raw ?? ''
-	);
-
-	return (
-		<>
-			<TextareaControl
-				__nextHasNoMarginBottom
-				value={ inputComment ?? '' }
-				onChange={ setInputComment }
-			/>
-			<VStack alignment="left" spacing="3" justify="flex-start">
-				<HStack alignment="left" spacing="3" justify="flex-start">
-					<Button
-						__next40pxDefaultSize
-						accessibleWhenDisabled
-						variant="primary"
-						onClick={ () => onSubmit( inputComment ) }
-						disabled={
-							0 === sanitizeCommentString( inputComment ).length
-						}
-					>
-						{ thread
-							? _x( 'Update', 'verb' )
-							: _x( 'Reply', 'Add reply comment' ) }
-					</Button>
-					<Button __next40pxDefaultSize onClick={ onCancel }>
-						{ _x( 'Cancel', 'Cancel comment edit' ) }
-					</Button>
-				</HStack>
-			</VStack>
 		</>
 	);
 }

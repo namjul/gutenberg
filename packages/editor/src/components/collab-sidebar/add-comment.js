@@ -7,16 +7,14 @@ import { useState, useEffect } from '@wordpress/element';
 import {
 	__experimentalHStack as HStack,
 	__experimentalVStack as VStack,
-	Button,
-	TextControl,
 } from '@wordpress/components';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
  */
-import { sanitizeCommentString } from './utils';
 import CommentAuthorInfo from './comment-author-info';
+import CommentForm from './comment-form';
 
 /**
  * Renders the UI for adding a comment in the Gutenberg editor's collaboration sidebar.
@@ -65,34 +63,14 @@ export function AddComment( {
 			<HStack alignment="left" spacing="3">
 				<CommentAuthorInfo />
 			</HStack>
-			<TextControl
-				__next40pxDefaultSize
-				__nextHasNoMarginBottom
-				value={ inputComment }
-				onChange={ setInputComment }
-				placeholder={ _x( 'Comment', 'noun' ) }
+			<CommentForm
+				onSubmit={ () => {
+					onSubmit( inputComment );
+					setInputComment( '' );
+				} }
+				onCancel={ handleCancel }
+				submitButtonText={ _x( 'Comment', 'Add comment button' ) }
 			/>
-			<HStack alignment="right" spacing="3">
-				<Button
-					__next40pxDefaultSize
-					variant="tertiary"
-					text={ _x( 'Cancel', 'Cancel comment button' ) }
-					onClick={ handleCancel }
-				/>
-				<Button
-					__next40pxDefaultSize
-					accessibleWhenDisabled
-					variant="primary"
-					text={ _x( 'Comment', 'Add comment button' ) }
-					disabled={
-						0 === sanitizeCommentString( inputComment ).length
-					}
-					onClick={ () => {
-						onSubmit( inputComment );
-						setInputComment( '' );
-					} }
-				/>
-			</HStack>
 		</VStack>
 	);
 }
