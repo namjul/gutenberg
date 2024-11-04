@@ -76,8 +76,6 @@ export default function useEditedEntityRecord( postType, postId ) {
 			const { getEditedEntityRecord, hasFinishedResolution } =
 				select( coreStore );
 
-			const templateInfo = getInfoTemplate( select, _record );
-
 			const usedPostType = postType ?? getEditedPostType();
 			const usedPostId = postId ?? getEditedPostId();
 			const _record = getEditedEntityRecord(
@@ -85,6 +83,9 @@ export default function useEditedEntityRecord( postType, postId ) {
 				usedPostType,
 				usedPostId
 			);
+
+			const templateInfo = getInfoTemplate( select, _record );
+
 			const _isLoaded =
 				usedPostId &&
 				hasFinishedResolution( 'getEditedEntityRecord', [
