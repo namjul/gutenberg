@@ -400,8 +400,8 @@ export default function PostList( { postType } ) {
 				onChangeView={ setView }
 				selection={ selection }
 				onChangeSelection={ onChangeSelection }
-				isClickable={ ( item ) => item.status !== 'trash' }
-				onClick={ ( { id } ) => {
+				isItemClickable={ ( item ) => item.status !== 'trash' }
+				onItemClick={ ( { id } ) => {
 					history.push( {
 						postId: id,
 						postType,

@@ -44,8 +44,8 @@ type DataViewsProps< Item > = {
 	defaultLayouts: SupportedLayouts;
 	selection?: string[];
 	onChangeSelection?: ( items: string[] ) => void;
-	onClick?: ( item: Item ) => void;
-	isClickable?: ( item: Item ) => boolean;
+	onItemClick?: ( item: Item ) => void;
+	isItemClickable?: ( item: Item ) => boolean;
 	header?: ReactNode;
 } & ( Item extends ItemWithId
 	? { getItemId?: ( item: Item ) => string }
@@ -67,8 +67,8 @@ export default function DataViews< Item >( {
 	defaultLayouts,
 	selection: selectionProperty,
 	onChangeSelection,
-	onClick,
-	isClickable,
+	onItemClick,
+	isItemClickable,
 	header,
 }: DataViewsProps< Item > ) {
 	const [ selectionState, setSelectionState ] = useState< string[] >( [] );
@@ -114,8 +114,8 @@ export default function DataViews< Item >( {
 				openedFilter,
 				setOpenedFilter,
 				getItemId,
-				isClickable: isClickable ?? ( () => false ),
-				onClick: onClick ?? ( () => {} ),
+				isItemClickable: isItemClickable ?? ( () => false ),
+				onItemClick: onItemClick ?? ( () => {} ),
 				density,
 			} }
 		>

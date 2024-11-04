@@ -29,8 +29,8 @@ interface GridItemProps< Item > {
 	selection: string[];
 	onChangeSelection: SetSelection;
 	getItemId: ( item: Item ) => string;
-	onClick: ( item: Item ) => void;
-	isClickable: ( item: Item ) => boolean;
+	onItemClick: ( item: Item ) => void;
+	isItemClickable: ( item: Item ) => boolean;
 	item: Item;
 	actions: Action< Item >[];
 	mediaField?: NormalizedField< Item >;
@@ -43,8 +43,8 @@ interface GridItemProps< Item > {
 function GridItem< Item >( {
 	selection,
 	onChangeSelection,
-	onClick,
-	isClickable,
+	onItemClick,
+	isItemClickable,
 	getItemId,
 	item,
 	actions,
@@ -89,21 +89,21 @@ function GridItem< Item >( {
 			<div
 				className={ clsx( 'dataviews-view-grid__media', {
 					'dataviews-view-grid__media--clickable':
-						isClickable( item ),
+						isItemClickable( item ),
 				} ) }
-				tabIndex={ isClickable( item ) ? 0 : undefined }
+				tabIndex={ isItemClickable( item ) ? 0 : undefined }
 				role="button"
 				onClick={ () => {
-					if ( isClickable( item ) ) {
-						onClick( item );
+					if ( isItemClickable( item ) ) {
+						onItemClick( item );
 					}
 				} }
 				onKeyDown={ ( event ) => {
 					if (
 						( event.key === 'Enter' || event.key === '' ) &&
-						isClickable( item )
+						isItemClickable( item )
 					) {
-						onClick( item );
+						onItemClick( item );
 					}
 				} }
 			>
@@ -124,21 +124,21 @@ function GridItem< Item >( {
 				<HStack
 					className={ clsx( 'dataviews-view-grid__primary-field', {
 						'dataviews-view-grid__primary-field--clickable':
-							isClickable( item ),
+							isItemClickable( item ),
 					} ) }
-					tabIndex={ isClickable( item ) ? 0 : undefined }
+					tabIndex={ isItemClickable( item ) ? 0 : undefined }
 					role="button"
 					onClick={ () => {
-						if ( isClickable( item ) ) {
-							onClick( item );
+						if ( isItemClickable( item ) ) {
+							onItemClick( item );
 						}
 					} }
 					onKeyDown={ ( event ) => {
 						if (
 							( event.key === 'Enter' || event.key === '' ) &&
-							isClickable( item )
+							isItemClickable( item )
 						) {
-							onClick( item );
+							onItemClick( item );
 						}
 					} }
 				>
@@ -215,8 +215,8 @@ export default function ViewGrid< Item >( {
 	getItemId,
 	isLoading,
 	onChangeSelection,
-	onClick,
-	isClickable,
+	onItemClick,
+	isItemClickable,
 	selection,
 	view,
 	density,
@@ -270,8 +270,8 @@ export default function ViewGrid< Item >( {
 								key={ getItemId( item ) }
 								selection={ selection }
 								onChangeSelection={ onChangeSelection }
-								onClick={ onClick }
-								isClickable={ isClickable }
+								onItemClick={ onItemClick }
+								isItemClickable={ isItemClickable }
 								getItemId={ getItemId }
 								item={ item }
 								actions={ actions }
