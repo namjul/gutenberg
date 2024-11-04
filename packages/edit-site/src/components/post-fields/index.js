@@ -8,7 +8,12 @@ import clsx from 'clsx';
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import { featuredImageField } from '@wordpress/fields';
+import {
+	featuredImageField,
+	slugField,
+	parentField,
+	passwordField,
+} from '@wordpress/fields';
 import {
 	createInterpolateElement,
 	useMemo,
@@ -232,7 +237,7 @@ function usePostFields() {
 					if ( isDraftOrPrivate ) {
 						return createInterpolateElement(
 							sprintf(
-								/* translators: %s: page creation date */
+								/* translators: %s: page creation or modification date. */
 								__( '<span>Modified: <time>%s</time></span>' ),
 								getFormattedDate( item.date )
 							),
@@ -283,7 +288,7 @@ function usePostFields() {
 					if ( isPending ) {
 						return createInterpolateElement(
 							sprintf(
-								/* translators: %s: the newest of created or modified date for the page */
+								/* translators: %s: page creation or modification date. */
 								__( '<span>Modified: <time>%s</time></span>' ),
 								getFormattedDate( dateToDisplay )
 							),
@@ -298,6 +303,8 @@ function usePostFields() {
 					return <time>{ getFormattedDate( item.date ) }</time>;
 				},
 			},
+			slugField,
+			parentField,
 			{
 				id: 'comment_status',
 				label: __( 'Discussion' ),
@@ -324,6 +331,7 @@ function usePostFields() {
 					},
 				],
 			},
+			passwordField,
 		],
 		[ authors, frontPageId, postsPageId ]
 	);

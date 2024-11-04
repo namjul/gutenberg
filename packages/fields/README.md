@@ -46,6 +46,14 @@ Undocumented declaration.
 
 Undocumented declaration.
 
+### parentField
+
+This field is used to display the post parent.
+
+### passwordField
+
+This field is used to display the post password.
+
 ### permanentlyDeletePost
 
 Undocumented declaration.
@@ -67,6 +75,10 @@ Undocumented declaration.
 Undocumented declaration.
 
 ### restorePost
+
+Undocumented declaration.
+
+### slugField
 
 Undocumented declaration.
 
