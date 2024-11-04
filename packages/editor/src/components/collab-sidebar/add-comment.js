@@ -3,7 +3,6 @@
  */
 import { _x } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
 import {
 	__experimentalHStack as HStack,
 	__experimentalVStack as VStack,
@@ -30,9 +29,6 @@ export function AddComment( {
 	showCommentBoard,
 	setShowCommentBoard,
 } ) {
-	// State to manage the comment thread.
-	const [ inputComment, setInputComment ] = useState( '' );
-
 	const { clientId, blockCommentId } = useSelect( ( select ) => {
 		const { getSelectedBlock } = select( blockEditorStore );
 		const selectedBlock = getSelectedBlock();
@@ -41,15 +37,6 @@ export function AddComment( {
 			blockCommentId: selectedBlock?.attributes?.blockCommentId,
 		};
 	} );
-
-	useEffect( () => {
-		setInputComment( '' );
-	}, [ clientId ] );
-
-	const handleCancel = () => {
-		setShowCommentBoard( false );
-		setInputComment( '' );
-	};
 
 	if ( ! showCommentBoard || ! clientId || undefined !== blockCommentId ) {
 		return null;
@@ -64,11 +51,12 @@ export function AddComment( {
 				<CommentAuthorInfo />
 			</HStack>
 			<CommentForm
-				onSubmit={ () => {
+				onSubmit={ ( inputComment ) => {
 					onSubmit( inputComment );
-					setInputComment( '' );
 				} }
-				onCancel={ handleCancel }
+				onCancel={ () => {
+					setShowCommentBoard( false );
+				} }
 				submitButtonText={ _x( 'Comment', 'Add comment button' ) }
 			/>
 		</VStack>
