@@ -9,7 +9,7 @@
  * @return WP_REST_Response Modified REST API response with default template part areas.
  */
 function gutenberg_add_default_template_part_areas_to_index( WP_REST_Response $response ) {
-	$response->data['defaultTemplatePartAreas'] = get_allowed_block_template_part_areas();
+	$response->data['default_template_part_areas'] = get_allowed_block_template_part_areas();
 	return $response;
 }
 
@@ -31,7 +31,7 @@ function gutenberg_add_default_template_types_to_index( WP_REST_Response $respon
 		$indexed_template_types[] = $template_type;
 	}
 
-	$response->data['defaultTemplateTypes'] = $indexed_template_types;
+	$response->data['default_template_types'] = $indexed_template_types;
 	return $response;
 }
 
