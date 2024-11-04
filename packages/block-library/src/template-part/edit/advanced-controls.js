@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEntityProp } from '@wordpress/core-data';
+import { useEntityProp, store as coreStore } from '@wordpress/core-data';
 import { SelectControl, TextControl } from '@wordpress/components';
 import { sprintf, __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
@@ -10,6 +10,7 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 import { TemplatePartImportControls } from './import-controls';
+import { getTemplatePartIcon } from './utils/get-template-part-icon';
 
 const htmlElementMessages = {
 	header: __(
@@ -54,14 +55,17 @@ export function TemplatePartAdvancedControls( {
 		templatePartId
 	);
 
-	const definedAreas = useSelect( ( select ) => {
-		// FIXME: @wordpress/block-library should not depend on @wordpress/editor.
-		// Blocks can be loaded into a *non-post* block editor.
-		/* eslint-disable-next-line @wordpress/data-no-store-string-literals */
-		return select(
-			'core/editor'
-		).__experimentalGetDefaultTemplatePartAreas();
-	}, [] );
+	const defaultTemplatePartAreas = useSelect(
+		( select ) =>
+			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+				?.defaultTemplatePartAreas || [],
+		[]
+	);
+
+	const definedAreas = defaultTemplatePartAreas.map( ( item ) => ( {
+		...item,
+		icon: getTemplatePartIcon( item.icon ),
+	} ) );
 
 	const areaOptions = definedAreas.map( ( { label, area: _area } ) => ( {
 		label,

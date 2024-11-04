@@ -1703,9 +1703,18 @@ export const getBlockListSettings = getBlockEditorSelector(
 );
 
 export const __experimentalGetDefaultTemplateTypes = createRegistrySelector(
-	( select ) => () =>
-		select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-			?.defaultTemplateTypes
+	( select ) => () => {
+		deprecated(
+			"select('core/editor').__experimentalGetDefaultTemplateTypes",
+			{
+				since: '6.7',
+				alternative:
+					"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.defaultTemplateTypes",
+			}
+		);
+		return select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+			?.defaultTemplateTypes;
+	}
 );
 
 /**
@@ -1718,6 +1727,15 @@ export const __experimentalGetDefaultTemplateTypes = createRegistrySelector(
 export const __experimentalGetDefaultTemplatePartAreas = createRegistrySelector(
 	( select ) =>
 		createSelector( () => {
+			deprecated(
+				"select('core/editor').__experimentalGetDefaultTemplatePartAreas",
+				{
+					since: '6.7',
+					alternative:
+						"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.defaultTemplatePartAreas",
+				}
+			);
+
 			const areas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
 					?.defaultTemplatePartAreas || [];
@@ -1736,20 +1754,30 @@ export const __experimentalGetDefaultTemplatePartAreas = createRegistrySelector(
  *
  * @return {Object} The template type.
  */
-export const __experimentalGetDefaultTemplateType = createSelector(
-	( state, slug ) => {
-		const templateTypes = __experimentalGetDefaultTemplateTypes( state );
-		if ( ! templateTypes ) {
-			return EMPTY_OBJECT;
-		}
+export const __experimentalGetDefaultTemplateType = createRegistrySelector(
+	( select ) =>
+		createSelector( ( state, slug ) => {
+			deprecated(
+				"select('core/editor').__experimentalGetDefaultTemplateType",
+				{
+					since: '6.7',
+				}
+			);
+			const templateTypes = select( coreStore ).getEntityRecord(
+				'root',
+				'__unstableBase'
+			)?.defaultTemplateTypes;
 
-		return (
-			Object.values( templateTypes ).find(
-				( type ) => type.slug === slug
-			) ?? EMPTY_OBJECT
-		);
-	},
-	( state ) => [ __experimentalGetDefaultTemplateTypes( state ) ]
+			if ( ! templateTypes ) {
+				return EMPTY_OBJECT;
+			}
+
+			return (
+				Object.values( templateTypes ).find(
+					( type ) => type.slug === slug
+				) ?? EMPTY_OBJECT
+			);
+		} )
 );
 
 /**
@@ -1760,38 +1788,57 @@ export const __experimentalGetDefaultTemplateType = createSelector(
  * @param {Object} template The template for which we need information.
  * @return {Object} Information about the template, including title, description, and icon.
  */
-export const __experimentalGetTemplateInfo = createSelector(
-	( state, template ) => {
-		if ( ! template ) {
-			return EMPTY_OBJECT;
-		}
+export const __experimentalGetTemplateInfo = createRegistrySelector(
+	( select ) =>
+		createSelector( ( state, template ) => {
+			deprecated( "select('core/editor').__experimentalGetTemplateInfo", {
+				since: '6.7',
+			} );
 
-		const { description, slug, title, area } = template;
-		const { title: defaultTitle, description: defaultDescription } =
-			__experimentalGetDefaultTemplateType( state, slug );
+			if ( ! template ) {
+				return EMPTY_OBJECT;
+			}
 
-		const templateTitle =
-			typeof title === 'string' ? title : title?.rendered;
-		const templateDescription =
-			typeof description === 'string' ? description : description?.raw;
-		const templateIcon =
-			__experimentalGetDefaultTemplatePartAreas( state ).find(
-				( item ) => area === item.area
-			)?.icon || layout;
+			const { description, slug, title, area } = template;
 
-		return {
-			title:
-				templateTitle && templateTitle !== slug
-					? templateTitle
-					: defaultTitle || slug,
-			description: templateDescription || defaultDescription,
-			icon: templateIcon,
-		};
-	},
-	( state ) => [
-		__experimentalGetDefaultTemplateTypes( state ),
-		__experimentalGetDefaultTemplatePartAreas( state ),
-	]
+			const templateTypes =
+				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+					?.defaultTemplateTypes || EMPTY_OBJECT;
+
+			const { title: defaultTitle, description: defaultDescription } =
+				Object.values( templateTypes ).find(
+					( type ) => type.slug === slug
+				) ?? EMPTY_OBJECT;
+
+			const templateTitle =
+				typeof title === 'string' ? title : title?.rendered;
+			const templateDescription =
+				typeof description === 'string'
+					? description
+					: description?.raw;
+
+			const templateAreas =
+				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+					?.defaultTemplatePartAreas || [];
+
+			const templateAreasWithIcon = templateAreas.map( ( item ) => ( {
+				...item,
+				icon: getTemplatePartIcon( item.icon ),
+			} ) );
+
+			const templateIcon =
+				templateAreasWithIcon.find( ( item ) => area === item.area )
+					?.icon || layout;
+
+			return {
+				title:
+					templateTitle && templateTitle !== slug
+						? templateTitle
+						: defaultTitle || slug,
+				description: templateDescription || defaultDescription,
+				icon: templateIcon,
+			};
+		} )
 );
 
 /**

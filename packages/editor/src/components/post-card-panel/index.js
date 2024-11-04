@@ -10,6 +10,13 @@ import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
+import {
+	header as headerIcon,
+	footer as footerIcon,
+	sidebar as sidebarIcon,
+	symbolFilled as symbolFilledIcon,
+	layout,
+} from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -23,6 +30,57 @@ import { unlock } from '../../lock-unlock';
 import PostActions from '../post-actions';
 import usePageTypeBadge from '../../utils/pageTypeBadge';
 
+const EMPTY_OBJECT = {};
+
+const getTemplatePartIcon = ( iconName ) => {
+	if ( 'header' === iconName ) {
+		return headerIcon;
+	} else if ( 'footer' === iconName ) {
+		return footerIcon;
+	} else if ( 'sidebar' === iconName ) {
+		return sidebarIcon;
+	}
+	return symbolFilledIcon;
+};
+
+const getInfoTemplate = ( select, template ) => {
+	const { description, slug, title, area } = template;
+
+	const templateTypes =
+		select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+			?.defaultTemplateTypes || EMPTY_OBJECT;
+
+	const { title: defaultTitle, description: defaultDescription } =
+		Object.values( templateTypes ).find( ( type ) => type.slug === slug ) ??
+		EMPTY_OBJECT;
+
+	const templateTitle = typeof title === 'string' ? title : title?.rendered;
+	const templateDescription =
+		typeof description === 'string' ? description : description?.raw;
+
+	const templateAreas =
+		select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+			?.defaultTemplatePartAreas || [];
+
+	const templateAreasWithIcon = templateAreas.map( ( item ) => ( {
+		...item,
+		icon: getTemplatePartIcon( item.icon ),
+	} ) );
+
+	const templateIcon =
+		templateAreasWithIcon.find( ( item ) => area === item.area )?.icon ||
+		layout;
+
+	return {
+		title:
+			templateTitle && templateTitle !== slug
+				? templateTitle
+				: defaultTitle || slug,
+		description: templateDescription || defaultDescription,
+		icon: templateIcon,
+	};
+};
+
 export default function PostCardPanel( {
 	postType,
 	postId,
@@ -30,17 +88,17 @@ export default function PostCardPanel( {
 } ) {
 	const { title, icon } = useSelect(
 		( select ) => {
-			const { __experimentalGetTemplateInfo } = select( editorStore );
 			const { getEditedEntityRecord } = select( coreStore );
 			const _record = getEditedEntityRecord(
 				'postType',
 				postType,
 				postId
 			);
+
 			const _templateInfo =
 				[ TEMPLATE_POST_TYPE, TEMPLATE_PART_POST_TYPE ].includes(
 					postType
-				) && __experimentalGetTemplateInfo( _record );
+				) && getInfoTemplate( select, _record );
 			return {
 				title: _templateInfo?.title || _record?.title,
 				icon: unlock( select( editorStore ) ).getPostIcon( postType, {
