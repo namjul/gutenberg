@@ -71,7 +71,7 @@
 }
 
 .dataviews-view-grid__primary-field.dataviews-view-grid__primary-field--clickable,
-.dataviews-view-table__primary-field.dataviews-view-table__primary-field--clickable {
+.dataviews-view-table__primary-field > .dataviews-view-table__cell-content--clickable {
 	.edit-site-post-list__title span {
 		cursor: pointer;
 		text-decoration: none;

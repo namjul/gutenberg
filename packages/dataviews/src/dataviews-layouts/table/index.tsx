@@ -113,31 +113,37 @@ function TableColumnField< Item >( {
 	isClickable,
 	onClick,
 }: TableColumnFieldProps< Item > ) {
+	const isPrimaryField = primaryField?.id === field.id;
+	const isClickableField = isClickable( item ) && isPrimaryField;
 	return (
 		<div
 			className={ clsx( 'dataviews-view-table__cell-content-wrapper', {
-				'dataviews-view-table__primary-field':
-					primaryField?.id === field.id,
-				'dataviews-view-table__primary-field--clickable':
-					isClickable( item ),
+				'dataviews-view-table__primary-field': isPrimaryField,
 			} ) }
-			tabIndex={ isClickable( item ) ? 0 : undefined }
-			role="button"
-			onClick={ () => {
-				if ( isClickable( item ) ) {
-					onClick( item );
-				}
-			} }
-			onKeyDown={ ( event ) => {
-				if (
-					( event.key === 'Enter' || event.key === '' ) &&
-					isClickable( item )
-				) {
-					onClick( item );
-				}
-			} }
 		>
-			<field.render { ...{ item } } />
+			<div
+				className={ clsx( 'dataviews-view-table__cell-content', {
+					'dataviews-view-table__cell-content--clickable':
+						isClickableField,
+				} ) }
+				tabIndex={ isClickableField ? 0 : undefined }
+				role="button"
+				onClick={ () => {
+					if ( isClickableField ) {
+						onClick( item );
+					}
+				} }
+				onKeyDown={ ( event ) => {
+					if (
+						( event.key === 'Enter' || event.key === '' ) &&
+						isClickableField
+					) {
+						onClick( item );
+					}
+				} }
+			>
+				<field.render { ...{ item } } />
+			</div>
 		</div>
 	);
 }
