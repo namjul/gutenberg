@@ -4,13 +4,8 @@
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	header as headerIcon,
-	footer as footerIcon,
-	sidebar as sidebarIcon,
-	symbolFilled as symbolFilledIcon,
-	layout,
-} from '@wordpress/icons';
+import { layout } from '@wordpress/icons';
+import { getTemplatePartIcon } from '@wordpress/editor';
 
 /**
  * Internal dependencies
@@ -18,17 +13,6 @@ import {
 import { store as editSiteStore } from '../../store';
 
 const EMPTY_OBJECT = {};
-
-const getTemplatePartIcon = ( iconName ) => {
-	if ( 'header' === iconName ) {
-		return headerIcon;
-	} else if ( 'footer' === iconName ) {
-		return footerIcon;
-	} else if ( 'sidebar' === iconName ) {
-		return sidebarIcon;
-	}
-	return symbolFilledIcon;
-};
 
 const getInfoTemplate = ( select, template ) => {
 	const { description, slug, title, area } = template;

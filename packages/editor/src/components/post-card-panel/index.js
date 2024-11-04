@@ -10,13 +10,7 @@ import { store as coreStore } from '@wordpress/core-data';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { decodeEntities } from '@wordpress/html-entities';
-import {
-	header as headerIcon,
-	footer as footerIcon,
-	sidebar as sidebarIcon,
-	symbolFilled as symbolFilledIcon,
-	layout,
-} from '@wordpress/icons';
+import { layout } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -29,19 +23,9 @@ import {
 import { unlock } from '../../lock-unlock';
 import PostActions from '../post-actions';
 import usePageTypeBadge from '../../utils/pageTypeBadge';
+import { getTemplatePartIcon } from '../../utils';
 
 const EMPTY_OBJECT = {};
-
-const getTemplatePartIcon = ( iconName ) => {
-	if ( 'header' === iconName ) {
-		return headerIcon;
-	} else if ( 'footer' === iconName ) {
-		return footerIcon;
-	} else if ( 'sidebar' === iconName ) {
-		return sidebarIcon;
-	}
-	return symbolFilledIcon;
-};
 
 const getInfoTemplate = ( select, template ) => {
 	const { description, slug, title, area } = template;
