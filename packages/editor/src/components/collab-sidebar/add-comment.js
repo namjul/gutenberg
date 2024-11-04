@@ -35,16 +35,14 @@ export function AddComment( {
 	// State to manage the comment thread.
 	const [ inputComment, setInputComment ] = useState( '' );
 
-	const { clientId, blockCommentId, showAddCommentBoard } = useSelect(
-		( select ) => {
-			const selectedBlock = select( blockEditorStore ).getSelectedBlock();
-			return {
-				clientId: selectedBlock?.clientId,
-				blockCommentId: selectedBlock?.attributes?.blockCommentId,
-				showAddCommentBoard: showCommentBoard,
-			};
-		}
-	);
+	const { clientId, blockCommentId } = useSelect( ( select ) => {
+		const { getSelectedBlock } = select( blockEditorStore );
+		const selectedBlock = getSelectedBlock();
+		return {
+			clientId: selectedBlock?.clientId,
+			blockCommentId: selectedBlock?.attributes?.blockCommentId,
+		};
+	} );
 
 	useEffect( () => {
 		setInputComment( '' );
@@ -55,7 +53,7 @@ export function AddComment( {
 		setInputComment( '' );
 	};
 
-	if ( ! showAddCommentBoard || ! clientId || undefined !== blockCommentId ) {
+	if ( ! showCommentBoard || ! clientId || undefined !== blockCommentId ) {
 		return null;
 	}
 
