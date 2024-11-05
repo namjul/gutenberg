@@ -5,8 +5,7 @@ import { layout } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import { getTemplatePartIcon } from '.';
-
+import { getTemplatePartIcon } from './get-template-part-icon';
 const EMPTY_OBJECT = {};
 
 export const getTemplateInfo = ( {
