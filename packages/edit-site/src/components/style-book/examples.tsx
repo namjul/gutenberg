@@ -96,7 +96,7 @@ function getLandingBlockExamples(
 	// (duplicate for now)
 	const headingsExample = {
 		name: 'core/heading',
-		title: __( 'Heading' ),
+		title: __( 'Headings' ),
 		category: 'landing',
 		blocks: createBlock( 'core/heading', {
 			content: `AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789{(...)},?!*&:;_@#$`,
