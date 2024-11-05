@@ -442,7 +442,14 @@ getDerivedStateFromError is used to render a fallback UI after an error has been
 
 ### getTemplateInfo
 
-Undocumented declaration.
+Helper function to retrieve the corresponding template info for a given template.
+
+_Parameters_
+
+-   _params_ `Object`:
+-   _params.templateTypes_ `Array`:
+-   _params.templateAreas_ `Array`:
+-   _params.template_ `Object`:
 
 ### getTemplatePartIcon
 

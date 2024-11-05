@@ -8,6 +8,13 @@ import { layout } from '@wordpress/icons';
 import { getTemplatePartIcon } from './get-template-part-icon';
 const EMPTY_OBJECT = {};
 
+/**
+ * Helper function to retrieve the corresponding template info for a given template.
+ * @param {Object} params
+ * @param {Array}  params.templateTypes
+ * @param {Array}  params.templateAreas
+ * @param {Object} params.template
+ */
 export const getTemplateInfo = ( {
 	templateTypes,
 	templateAreas,
