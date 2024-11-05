@@ -26,7 +26,7 @@ type DataViewsContextType< Item > = {
 	openedFilter: string | null;
 	setOpenedFilter: ( openedFilter: string | null ) => void;
 	getItemId: ( item: Item ) => string;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 	isItemClickable: ( item: Item ) => boolean;
 	density: number;
 };
@@ -45,7 +45,7 @@ const DataViewsContext = createContext< DataViewsContextType< any > >( {
 	setOpenedFilter: () => {},
 	openedFilter: null,
 	getItemId: ( item ) => item.id,
-	onItemClick: () => {},
+	onClickItem: () => {},
 	isItemClickable: () => false,
 	density: 0,
 } );

@@ -28,7 +28,7 @@ export default function DataViewsLayout() {
 		onChangeSelection,
 		setOpenedFilter,
 		density,
-		onItemClick,
+		onClickItem,
 		isItemClickable,
 	} = useContext( DataViewsContext );
 
@@ -46,7 +46,7 @@ export default function DataViewsLayout() {
 			onChangeSelection={ onChangeSelection }
 			selection={ selection }
 			setOpenedFilter={ setOpenedFilter }
-			onItemClick={ onItemClick }
+			onClickItem={ onClickItem }
 			isItemClickable={ isItemClickable }
 			view={ view }
 			density={ density }

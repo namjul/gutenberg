@@ -29,7 +29,7 @@ interface GridItemProps< Item > {
 	selection: string[];
 	onChangeSelection: SetSelection;
 	getItemId: ( item: Item ) => string;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 	isItemClickable: ( item: Item ) => boolean;
 	item: Item;
 	actions: Action< Item >[];
@@ -43,7 +43,7 @@ interface GridItemProps< Item > {
 function GridItem< Item >( {
 	selection,
 	onChangeSelection,
-	onItemClick,
+	onClickItem,
 	isItemClickable,
 	getItemId,
 	item,
@@ -95,7 +95,7 @@ function GridItem< Item >( {
 				role="button"
 				onClick={ () => {
 					if ( isItemClickable( item ) ) {
-						onItemClick( item );
+						onClickItem( item );
 					}
 				} }
 				onKeyDown={ ( event ) => {
@@ -103,7 +103,7 @@ function GridItem< Item >( {
 						( event.key === 'Enter' || event.key === '' ) &&
 						isItemClickable( item )
 					) {
-						onItemClick( item );
+						onClickItem( item );
 					}
 				} }
 			>
@@ -121,28 +121,33 @@ function GridItem< Item >( {
 				justify="space-between"
 				className="dataviews-view-grid__title-actions"
 			>
-				<HStack
-					className={ clsx( 'dataviews-view-grid__primary-field', {
-						'dataviews-view-grid__primary-field--clickable':
-							isItemClickable( item ),
-					} ) }
-					tabIndex={ isItemClickable( item ) ? 0 : undefined }
-					role="button"
-					onClick={ () => {
-						if ( isItemClickable( item ) ) {
-							onItemClick( item );
-						}
-					} }
-					onKeyDown={ ( event ) => {
-						if (
-							( event.key === 'Enter' || event.key === '' ) &&
-							isItemClickable( item )
-						) {
-							onItemClick( item );
-						}
-					} }
-				>
-					{ renderedPrimaryField }
+				<HStack>
+					<div
+						className={ clsx(
+							'dataviews-view-grid__primary-field',
+							{
+								'dataviews-view-grid__primary-field--clickable':
+									isItemClickable( item ),
+							}
+						) }
+						tabIndex={ isItemClickable( item ) ? 0 : undefined }
+						role="button"
+						onClick={ () => {
+							if ( isItemClickable( item ) ) {
+								onClickItem( item );
+							}
+						} }
+						onKeyDown={ ( event ) => {
+							if (
+								( event.key === 'Enter' || event.key === '' ) &&
+								isItemClickable( item )
+							) {
+								onClickItem( item );
+							}
+						} }
+					>
+						{ renderedPrimaryField }
+					</div>
 				</HStack>
 				<ItemActions item={ item } actions={ actions } isCompact />
 			</HStack>
@@ -215,7 +220,7 @@ export default function ViewGrid< Item >( {
 	getItemId,
 	isLoading,
 	onChangeSelection,
-	onItemClick,
+	onClickItem,
 	isItemClickable,
 	selection,
 	view,
@@ -270,7 +275,7 @@ export default function ViewGrid< Item >( {
 								key={ getItemId( item ) }
 								selection={ selection }
 								onChangeSelection={ onChangeSelection }
-								onItemClick={ onItemClick }
+								onClickItem={ onClickItem }
 								isItemClickable={ isItemClickable }
 								getItemId={ getItemId }
 								item={ item }

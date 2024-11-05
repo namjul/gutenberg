@@ -41,7 +41,7 @@ interface TableColumnFieldProps< Item > {
 	field: NormalizedField< Item >;
 	item: Item;
 	isItemClickable: ( item: Item ) => boolean;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 }
 
 interface TableColumnCombinedProps< Item > {
@@ -51,7 +51,7 @@ interface TableColumnCombinedProps< Item > {
 	item: Item;
 	view: ViewTableType;
 	isItemClickable: ( item: Item ) => boolean;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 }
 
 interface TableColumnProps< Item > {
@@ -61,7 +61,7 @@ interface TableColumnProps< Item > {
 	column: string;
 	view: ViewTableType;
 	isItemClickable: ( item: Item ) => boolean;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 }
 
 interface TableRowProps< Item > {
@@ -76,7 +76,7 @@ interface TableRowProps< Item > {
 	getItemId: ( item: Item ) => string;
 	onChangeSelection: SetSelection;
 	isItemClickable: ( item: Item ) => boolean;
-	onItemClick: ( item: Item ) => void;
+	onClickItem: ( item: Item ) => void;
 }
 
 function TableColumn< Item >( {
@@ -111,7 +111,7 @@ function TableColumnField< Item >( {
 	item,
 	field,
 	isItemClickable,
-	onItemClick,
+	onClickItem,
 }: TableColumnFieldProps< Item > ) {
 	const isPrimaryField = primaryField?.id === field.id;
 	const isItemClickableField = isItemClickable( item ) && isPrimaryField;
@@ -130,7 +130,7 @@ function TableColumnField< Item >( {
 				role="button"
 				onClick={ () => {
 					if ( isItemClickableField ) {
-						onItemClick( item );
+						onClickItem( item );
 					}
 				} }
 				onKeyDown={ ( event ) => {
@@ -138,7 +138,7 @@ function TableColumnField< Item >( {
 						( event.key === 'Enter' || event.key === '' ) &&
 						isItemClickableField
 					) {
-						onItemClick( item );
+						onClickItem( item );
 					}
 				} }
 			>
@@ -173,7 +173,7 @@ function TableRow< Item >( {
 	selection,
 	getItemId,
 	isItemClickable,
-	onItemClick,
+	onClickItem,
 	onChangeSelection,
 }: TableRowProps< Item > ) {
 	const hasPossibleBulkAction = useHasAPossibleBulkAction( actions, item );
@@ -250,7 +250,7 @@ function TableRow< Item >( {
 						<TableColumn
 							primaryField={ primaryField }
 							isItemClickable={ isItemClickable }
-							onItemClick={ onItemClick }
+							onClickItem={ onClickItem }
 							fields={ fields }
 							item={ item }
 							column={ column }
@@ -289,7 +289,7 @@ function ViewTable< Item >( {
 	onChangeSelection,
 	selection,
 	setOpenedFilter,
-	onItemClick,
+	onClickItem,
 	isItemClickable,
 	view,
 }: ViewTableProps< Item > ) {
@@ -431,7 +431,7 @@ function ViewTable< Item >( {
 								selection={ selection }
 								getItemId={ getItemId }
 								onChangeSelection={ onChangeSelection }
-								onItemClick={ onItemClick }
+								onClickItem={ onClickItem }
 								isItemClickable={ isItemClickable }
 							/>
 						) ) }
