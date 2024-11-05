@@ -203,6 +203,22 @@ function StyleBook( {
 		[ examples ]
 	);
 
+	const examplesForSinglePageUse = [];
+	const landingCategoryExamples = getExamplesByCategory(
+		{ slug: 'landing' },
+		examples
+	);
+	examplesForSinglePageUse.push( ...landingCategoryExamples.examples );
+	const otherExamples = examples.filter( ( example ) => {
+		return (
+			example.category !== 'landing' &&
+			! landingCategoryExamples.examples.find(
+				( landingExample ) => landingExample.name === example.name
+			)
+		);
+	} );
+	examplesForSinglePageUse.push( ...otherExamples );
+
 	const { base: baseConfig } = useContext( GlobalStylesContext );
 	const goTo = getStyleBookNavigationFromPath( path );
 
@@ -286,7 +302,7 @@ function StyleBook( {
 					</Tabs>
 				) : (
 					<StyleBookBody
-						examples={ examples }
+						examples={ examplesForSinglePageUse }
 						isSelected={ isSelected }
 						onClick={ onClick }
 						onSelect={ onSelect }
