@@ -103,7 +103,7 @@ test.describe( 'Style Book', () => {
 		await page
 			.frameLocator( '[name="style-book-canvas"]' )
 			.getByRole( 'button', {
-				name: 'Open Quote styles in Styles panel',
+				name: 'Open Pullquote styles in Styles panel',
 			} )
 			.click();
 

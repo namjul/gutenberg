@@ -96,7 +96,7 @@ function getLandingBlockExamples(
 	// (duplicate for now)
 	const headingsExample = {
 		name: 'core/heading',
-		title: __( 'Headings' ),
+		title: __( 'Heading' ),
 		category: 'landing',
 		blocks: createBlock( 'core/heading', {
 			content: `AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789{(...)},?!*&:;_@#$`,
@@ -107,7 +107,7 @@ function getLandingBlockExamples(
 
 	const paragraphExample = {
 		name: 'core/paragraph',
-		title: __( 'Paragraphs' ),
+		title: __( 'Paragraph' ),
 		category: 'landing',
 		blocks: createBlock( 'core/paragraph', {
 			content: `There was an Old Man of Vienna, 
