@@ -377,15 +377,6 @@ The `defaultLayouts` property should be an object that includes properties named
 
 #### `selection`: `string[]`
 
-Callback that signals the user selected one of more items, and takes them as parameter.
-
-### `isItemClickable`: `function`
-
-A function that determines if a media field or a primary field are clickable. It receives an item as an argument and returns a boolean value indicating whether the item can be clicked.
-
-### `onClickItem`: `function`
-
-A callback function that is triggered when a user clicks on a media field or primary field. This function is currently implemented only in the `grid` and `list` views.
 The list of selected items' ids.
 
 If `selection` and `onChangeSelection` are provided, the `DataViews` component behaves as a controlled component, otherwise, it behaves like an uncontrolled component.
@@ -395,6 +386,14 @@ If `selection` and `onChangeSelection` are provided, the `DataViews` component b
 Callback that signals the user selected one of more items. It receives the list of selected items' ids as a parameter.
 
 If `selection` and `onChangeSelection` are provided, the `DataViews` component behaves as a controlled component, otherwise, it behaves like an uncontrolled component.
+
+### `isItemClickable`: `function`
+
+A function that determines if a media field or a primary field are clickable. It receives an item as an argument and returns a boolean value indicating whether the item can be clicked.
+
+### `onClickItem`: `function`
+
+A callback function that is triggered when a user clicks on a media field or primary field. This function is currently implemented only in the `grid` and `list` views.
 
 #### `header`: React component
 
