@@ -3,8 +3,6 @@
  */
 import { useState } from '@wordpress/element';
 import { useRegistry, createRegistry, RegistryProvider } from '@wordpress/data';
-// eslint-disable-next-line no-restricted-syntax
-import type { WPDataRegistry } from '@wordpress/data/build-types/registry';
 import { createHigherOrderComponent } from '@wordpress/compose';
 
 /**
@@ -12,6 +10,8 @@ import { createHigherOrderComponent } from '@wordpress/compose';
  */
 import { storeConfig } from '../../store';
 import { STORE_NAME as mediaUploadStoreName } from '../../store/constants';
+
+type WPDataRegistry = ReturnType< typeof createRegistry >;
 
 function getSubRegistry(
 	subRegistries: WeakMap< WPDataRegistry, WPDataRegistry >,
