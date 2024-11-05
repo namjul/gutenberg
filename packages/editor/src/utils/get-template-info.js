@@ -15,11 +15,13 @@ const EMPTY_OBJECT = {};
  * @param {Array}  params.templateAreas
  * @param {Object} params.template
  */
-export const getTemplateInfo = ( {
-	templateTypes,
-	templateAreas,
-	template,
-} ) => {
+export const getTemplateInfo = ( params ) => {
+	if ( ! params ) {
+		return EMPTY_OBJECT;
+	}
+
+	const { templateTypes, templateAreas, template } = params;
+
 	const { description, slug, title, area } = template;
 
 	const { title: defaultTitle, description: defaultDescription } =
