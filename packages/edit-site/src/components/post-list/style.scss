@@ -70,23 +70,24 @@
 	overflow: hidden;
 }
 
-.dataviews-view-grid__primary-field.dataviews-view-grid__primary-field--clickable,
-.dataviews-view-table__primary-field > .dataviews-view-table__cell-content--clickable {
-	.edit-site-post-list__title span {
-		cursor: pointer;
-		text-decoration: none;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
-		display: block;
-		flex-grow: 0;
-		color: $gray-900;
+.dataviews-view-grid__primary-field.dataviews-view-grid__primary-field--clickable
+.edit-site-post-list__title
+span,
+.dataviews-view-table__primary-field > .dataviews-view-table__cell-content--clickable
+.edit-site-post-list__title
+span {
+	text-decoration: none;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	display: block;
+	flex-grow: 0;
+	color: $gray-900;
 
-		&:hover {
-			color: var(--wp-admin-theme-color);
-		}
-		@include link-reset();
+	&:hover {
+		color: var(--wp-admin-theme-color);
 	}
+	@include link-reset();
 }
 
 .edit-site-post-list__title-badge {

@@ -401,7 +401,7 @@ export default function PostList( { postType } ) {
 				selection={ selection }
 				onChangeSelection={ onChangeSelection }
 				isItemClickable={ ( item ) => item.status !== 'trash' }
-				onItemClick={ ( { id } ) => {
+				onClickItem={ ( { id } ) => {
 					history.push( {
 						postId: id,
 						postType,
