@@ -99,10 +99,7 @@ function getLandingBlockExamples(
 		title: __( 'Headings' ),
 		category: 'landing',
 		blocks: createBlock( 'core/heading', {
-			content: `AaBbCcDdEeFfGgHhIi
-				JjKkLlMmNnOoPpQqRrSs
-				TtUuVvWwXxYyZz
-				0123456789{(...)},?!*&:;_@#$`,
+			content: `AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789{(...)},?!*&:;_@#$`,
 			level: 1,
 		} ),
 	};
