@@ -12,7 +12,6 @@ import { addQueryArgs, cleanForSlug } from '@wordpress/url';
 import { createSelector, createRegistrySelector } from '@wordpress/data';
 import deprecated from '@wordpress/deprecated';
 import { Platform } from '@wordpress/element';
-import { layout } from '@wordpress/icons';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { store as coreStore } from '@wordpress/core-data';
 import { store as preferencesStore } from '@wordpress/preferences';
@@ -29,6 +28,7 @@ import {
 import { getPostRawValue } from './reducer';
 import { getTemplatePartIcon } from '../utils/get-template-part-icon';
 import { unlock } from '../lock-unlock';
+import { getTemplateInfo } from '../utils';
 
 /**
  * Shared reference to an empty object for cases where it is important to avoid
@@ -1799,45 +1799,19 @@ export const __experimentalGetTemplateInfo = createRegistrySelector(
 				return EMPTY_OBJECT;
 			}
 
-			const { description, slug, title, area } = template;
-
 			const templateTypes =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplateTypes || EMPTY_OBJECT;
-
-			const { title: defaultTitle, description: defaultDescription } =
-				Object.values( templateTypes ).find(
-					( type ) => type.slug === slug
-				) ?? EMPTY_OBJECT;
-
-			const templateTitle =
-				typeof title === 'string' ? title : title?.rendered;
-			const templateDescription =
-				typeof description === 'string'
-					? description
-					: description?.raw;
+					?.defaultTemplateTypes || [];
 
 			const templateAreas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
 					?.defaultTemplatePartAreas || [];
 
-			const templateAreasWithIcon = templateAreas.map( ( item ) => ( {
-				...item,
-				icon: getTemplatePartIcon( item.icon ),
-			} ) );
-
-			const templateIcon =
-				templateAreasWithIcon.find( ( item ) => area === item.area )
-					?.icon || layout;
-
-			return {
-				title:
-					templateTitle && templateTitle !== slug
-						? templateTitle
-						: defaultTitle || slug,
-				description: templateDescription || defaultDescription,
-				icon: templateIcon,
-			};
+			return getTemplateInfo( {
+				template,
+				templateAreas,
+				templateTypes,
+			} );
 		} )
 );
 

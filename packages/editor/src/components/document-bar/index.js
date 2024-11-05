@@ -29,6 +29,7 @@ import { decodeEntities } from '@wordpress/html-entities';
 import { TEMPLATE_POST_TYPES } from '../../store/constants';
 import { store as editorStore } from '../../store';
 import usePageTypeBadge from '../../utils/pageTypeBadge';
+import { getTemplateInfo } from '../../utils';
 
 /** @typedef {import("@wordpress/components").IconType} IconType */
 
@@ -60,12 +61,8 @@ export default function DocumentBar( props ) {
 		templateTitle,
 		onNavigateToPreviousEntityRecord,
 	} = useSelect( ( select ) => {
-		const {
-			getCurrentPostType,
-			getCurrentPostId,
-			getEditorSettings,
-			__experimentalGetTemplateInfo: getTemplateInfo,
-		} = select( editorStore );
+		const { getCurrentPostType, getCurrentPostId, getEditorSettings } =
+			select( editorStore );
 		const {
 			getEditedEntityRecord,
 			getPostType,
@@ -78,7 +75,19 @@ export default function DocumentBar( props ) {
 			_postType,
 			_postId
 		);
-		const _templateInfo = getTemplateInfo( _document );
+
+		const templateAreas =
+			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+				?.defaultTemplatePartAreas || [];
+
+		const templateTypes =
+			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+				?.defaultTemplateTypes || [];
+		const _templateInfo = getTemplateInfo( {
+			templateAreas,
+			templateTypes,
+			template: _document,
+		} );
 		const _postTypeLabel = getPostType( _postType )?.labels?.singular_name;
 
 		return {

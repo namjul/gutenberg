@@ -440,6 +440,10 @@ getDerivedStateFromError is used to render a fallback UI after an error has been
 
 > **Deprecated** since 5.3, use `wp.blockEditor.getFontSizeClass` instead.
 
+### getTemplateInfo
+
+Undocumented declaration.
+
 ### getTemplatePartIcon
 
 Helper function to retrieve the corresponding icon by name.
