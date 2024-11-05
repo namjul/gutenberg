@@ -58,7 +58,7 @@ export function TemplatePartAdvancedControls( {
 	const defaultTemplatePartAreas = useSelect(
 		( select ) =>
 			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-				?.defaultTemplatePartAreas || [],
+				?.default_template_part_areas || [],
 		[]
 	);
 

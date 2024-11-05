@@ -38,7 +38,7 @@ const selectTemplateParts = createSelector(
 		// parts can be treated as uncategorized.
 		const knownAreas =
 			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-				?.defaultTemplatePartAreas || [];
+				?.default_template_part_areas || [];
 
 		const templatePartAreas = knownAreas.map( ( area ) => area.area );
 
@@ -80,7 +80,7 @@ const selectTemplateParts = createSelector(
 			{ per_page: -1 },
 		] ),
 		select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-			?.defaultTemplatePartAreas,
+			?.default_template_part_areas,
 	]
 );
 

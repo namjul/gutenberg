@@ -38,7 +38,7 @@ export default function useTemplatePartAreaLabel( clientId ) {
 
 			const defaultTemplatePartAreas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplatePartAreas || [];
+					?.default_template_part_areas || [];
 
 			const definedAreas = defaultTemplatePartAreas.map( ( item ) => ( {
 				...item,

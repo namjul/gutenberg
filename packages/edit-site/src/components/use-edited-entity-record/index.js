@@ -32,11 +32,11 @@ export default function useEditedEntityRecord( postType, postId ) {
 
 			const templateAreas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplatePartAreas || [];
+					?.default_template_part_areas || [];
 
 			const templateTypes =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplateTypes || [];
+					?.default_template_types || [];
 
 			const templateInfo = getTemplateInfo( {
 				template: _record,

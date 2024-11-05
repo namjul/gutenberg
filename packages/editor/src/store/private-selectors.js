@@ -101,7 +101,7 @@ export const getPostIcon = createRegistrySelector(
 						select( coreStore ).getEntityRecord(
 							'root',
 							'__unstableBase'
-						)?.defaultTemplatePartAreas || []
+						)?.default_template_part_areas || []
 					).find( ( item ) => options.area === item.area )?.icon ||
 					layout
 				);

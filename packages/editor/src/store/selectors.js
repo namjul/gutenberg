@@ -1709,11 +1709,11 @@ export const __experimentalGetDefaultTemplateTypes = createRegistrySelector(
 			{
 				since: '6.7',
 				alternative:
-					"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.defaultTemplateTypes",
+					"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.default_template_types",
 			}
 		);
 		return select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-			?.defaultTemplateTypes;
+			?.default_template_types;
 	}
 );
 
@@ -1732,13 +1732,13 @@ export const __experimentalGetDefaultTemplatePartAreas = createRegistrySelector(
 				{
 					since: '6.7',
 					alternative:
-						"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.defaultTemplatePartAreas",
+						"select('core/core-data').getEntityRecord( 'root', '__unstableBase' )?.default_template_part_areas",
 				}
 			);
 
 			const areas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplatePartAreas || [];
+					?.default_template_part_areas || [];
 
 			return areas.map( ( item ) => {
 				return { ...item, icon: getTemplatePartIcon( item.icon ) };
@@ -1766,7 +1766,7 @@ export const __experimentalGetDefaultTemplateType = createRegistrySelector(
 			const templateTypes = select( coreStore ).getEntityRecord(
 				'root',
 				'__unstableBase'
-			)?.defaultTemplateTypes;
+			)?.default_template_types;
 
 			if ( ! templateTypes ) {
 				return EMPTY_OBJECT;
@@ -1801,11 +1801,11 @@ export const __experimentalGetTemplateInfo = createRegistrySelector(
 
 			const templateTypes =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplateTypes || [];
+					?.default_template_types || [];
 
 			const templateAreas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplatePartAreas || [];
+					?.default_template_part_areas || [];
 
 			return getTemplateInfo( {
 				template,

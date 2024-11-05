@@ -138,7 +138,7 @@ export function useTemplatePartArea( area ) {
 		( select ) => {
 			const definedAreas =
 				select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
-					?.defaultTemplatePartAreas || [];
+					?.default_template_part_areas || [];
 
 			const selectedArea = definedAreas.find(
 				( definedArea ) => definedArea.area === area
