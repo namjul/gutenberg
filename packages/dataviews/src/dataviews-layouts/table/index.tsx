@@ -35,6 +35,7 @@ import type {
 import type { SetSelection } from '../../private-types';
 import ColumnHeaderMenu from './column-header-menu';
 import { getVisibleFieldIds } from '../index';
+import { useClickableItemProps } from '../hooks/use-clickable-item-props';
 
 interface TableColumnFieldProps< Item > {
 	primaryField?: NormalizedField< Item >;
@@ -114,34 +115,23 @@ function TableColumnField< Item >( {
 	onClickItem,
 }: TableColumnFieldProps< Item > ) {
 	const isPrimaryField = primaryField?.id === field.id;
-	const isItemClickableField = isItemClickable( item ) && isPrimaryField;
+	const isItemClickableField = ( i: Item ) =>
+		isItemClickable( i ) && isPrimaryField;
+
+	const clickableProps = useClickableItemProps(
+		item,
+		isItemClickableField,
+		onClickItem,
+		'dataviews-view-table__cell-content'
+	);
+
 	return (
 		<div
 			className={ clsx( 'dataviews-view-table__cell-content-wrapper', {
 				'dataviews-view-table__primary-field': isPrimaryField,
 			} ) }
 		>
-			<div
-				className={ clsx( 'dataviews-view-table__cell-content', {
-					'dataviews-view-table__cell-content--clickable':
-						isItemClickableField,
-				} ) }
-				tabIndex={ isItemClickableField ? 0 : undefined }
-				role="button"
-				onClick={ () => {
-					if ( isItemClickableField ) {
-						onClickItem( item );
-					}
-				} }
-				onKeyDown={ ( event ) => {
-					if (
-						( event.key === 'Enter' || event.key === '' ) &&
-						isItemClickableField
-					) {
-						onClickItem( item );
-					}
-				} }
-			>
+			<div { ...clickableProps }>
 				<field.render { ...{ item } } />
 			</div>
 		</div>

@@ -24,6 +24,7 @@ import SingleSelectionCheckbox from '../../components/dataviews-selection-checkb
 import { useHasAPossibleBulkAction } from '../../components/dataviews-bulk-actions';
 import type { Action, NormalizedField, ViewGridProps } from '../../types';
 import type { SetSelection } from '../../private-types';
+import { useClickableItemProps } from '../hooks/use-clickable-item-props';
 
 interface GridItemProps< Item > {
 	selection: string[];
@@ -64,6 +65,20 @@ function GridItem< Item >( {
 		<primaryField.render item={ item } />
 	) : null;
 
+	const clickableMediaItemProps = useClickableItemProps(
+		item,
+		isItemClickable,
+		onClickItem,
+		'dataviews-view-grid__media'
+	);
+
+	const clickablePrimaryItemProps = useClickableItemProps(
+		item,
+		isItemClickable,
+		onClickItem,
+		'dataviews-view-grid__primary-field'
+	);
+
 	return (
 		<VStack
 			spacing={ 0 }
@@ -86,29 +101,7 @@ function GridItem< Item >( {
 				}
 			} }
 		>
-			<div
-				className={ clsx( 'dataviews-view-grid__media', {
-					'dataviews-view-grid__media--clickable':
-						isItemClickable( item ),
-				} ) }
-				tabIndex={ isItemClickable( item ) ? 0 : undefined }
-				role="button"
-				onClick={ () => {
-					if ( isItemClickable( item ) ) {
-						onClickItem( item );
-					}
-				} }
-				onKeyDown={ ( event ) => {
-					if (
-						( event.key === 'Enter' || event.key === '' ) &&
-						isItemClickable( item )
-					) {
-						onClickItem( item );
-					}
-				} }
-			>
-				{ renderedMediaField }
-			</div>
+			<div { ...clickableMediaItemProps }>{ renderedMediaField }</div>
 			<SingleSelectionCheckbox
 				item={ item }
 				selection={ selection }
@@ -122,30 +115,7 @@ function GridItem< Item >( {
 				className="dataviews-view-grid__title-actions"
 			>
 				<HStack>
-					<div
-						className={ clsx(
-							'dataviews-view-grid__primary-field',
-							{
-								'dataviews-view-grid__primary-field--clickable':
-									isItemClickable( item ),
-							}
-						) }
-						tabIndex={ isItemClickable( item ) ? 0 : undefined }
-						role="button"
-						onClick={ () => {
-							if ( isItemClickable( item ) ) {
-								onClickItem( item );
-							}
-						} }
-						onKeyDown={ ( event ) => {
-							if (
-								( event.key === 'Enter' || event.key === '' ) &&
-								isItemClickable( item )
-							) {
-								onClickItem( item );
-							}
-						} }
-					>
+					<div { ...clickablePrimaryItemProps }>
 						{ renderedPrimaryField }
 					</div>
 				</HStack>
