@@ -16,19 +16,14 @@ export const useClickableItemProps = < Item >(
 			[ className + '--clickable' ]: isClickable,
 		} ),
 		role: isClickable ? 'button' : undefined,
-		onClick: () => {
-			if ( isClickable ) {
-				onClickItem( item );
-			}
-		},
 		tabIndex: isClickable ? 0 : undefined,
-		onKeyDown: ( event: React.KeyboardEvent ) => {
-			if (
-				( event.key === 'Enter' || event.key === '' ) &&
-				isClickable
-			) {
-				onClickItem( item );
-			}
-		},
+		onClick: ! isClickable ? undefined : () => onClickItem( item ),
+		onKeyDown: ! isClickable
+			? undefined
+			: ( event: React.KeyboardEvent ) => {
+					if ( event.key === 'Enter' || event.key === '' ) {
+						onClickItem( item );
+					}
+			  },
 	};
 };
