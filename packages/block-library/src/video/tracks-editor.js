@@ -87,7 +87,7 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 	const { src = '', label = '', srcLang = '', kind = DEFAULT_KIND } = track;
 	const fileName = src.startsWith( 'blob:' ) ? '' : getFilename( src ) || '';
 	return (
-		<NavigableMenu>
+		<>
 			<VStack
 				className="block-library-video-tracks-editor__single-track-editor"
 				spacing="4"
@@ -185,7 +185,7 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 					</HStack>
 				</VStack>
 			</VStack>
-		</NavigableMenu>
+		</>
 	);
 }
 
