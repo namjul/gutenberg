@@ -15,7 +15,7 @@ export const useClickableItemProps = < Item >(
 		className: clsx( className, {
 			[ className + '--clickable' ]: isClickable,
 		} ),
-		role: isItemClickable( item ) ? 'button' : undefined,
+		role: isClickable ? 'button' : undefined,
 		onClick: () => {
 			if ( isClickable ) {
 				onClickItem( item );
