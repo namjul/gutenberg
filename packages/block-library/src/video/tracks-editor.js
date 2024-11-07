@@ -24,7 +24,7 @@ import {
 } from '@wordpress/block-editor';
 import { upload, media } from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useState, useRef, useEffect } from '@wordpress/element';
 import { getFilename } from '@wordpress/url';
 
 const ALLOWED_TYPES = [ 'text/vtt' ];
@@ -102,9 +102,6 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 					<TextControl
 						__next40pxDefaultSize
 						__nextHasNoMarginBottom
-						/* eslint-disable jsx-a11y/no-autofocus */
-						autoFocus
-						/* eslint-enable jsx-a11y/no-autofocus */
 						onChange={ ( newLabel ) =>
 							onChange( {
 								...track,
@@ -194,6 +191,11 @@ export default function TracksEditor( { tracks = [], onChange } ) {
 		return select( blockEditorStore ).getSettings().mediaUpload;
 	}, [] );
 	const [ trackBeingEdited, setTrackBeingEdited ] = useState( null );
+	const dropdownPopoverRef = useRef();
+
+	useEffect( () => {
+		dropdownPopoverRef.current?.focus();
+	}, [ trackBeingEdited ] );
 
 	if ( ! mediaUpload ) {
 		return null;
@@ -201,6 +203,10 @@ export default function TracksEditor( { tracks = [], onChange } ) {
 	return (
 		<Dropdown
 			contentClassName="block-library-video-tracks-editor"
+			focusOnMount
+			popoverProps={ {
+				ref: dropdownPopoverRef,
+			} }
 			renderToggle={ ( { isOpen, onToggle } ) => (
 				<ToolbarGroup>
 					<ToolbarButton
