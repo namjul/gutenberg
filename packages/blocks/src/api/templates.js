@@ -95,7 +95,7 @@ export function synchronizeBlocksWithTemplate( blocks = [], template ) {
 					block.innerBlocks,
 					innerBlocksTemplate
 				);
-				return { ...block, innerBlocks };
+				return { ...block, attributes, innerBlocks };
 			}
 
 			// To support old templates that were using the "children" format
