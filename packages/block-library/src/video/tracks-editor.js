@@ -77,102 +77,100 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 	const { src = '', label = '', srcLang = '', kind = DEFAULT_KIND } = track;
 	const fileName = src.startsWith( 'blob:' ) ? '' : getFilename( src ) || '';
 	return (
-		<>
-			<VStack
-				className="block-library-video-tracks-editor__single-track-editor"
-				spacing="4"
-			>
-				<span className="block-library-video-tracks-editor__single-track-editor-edit-track-label">
-					{ __( 'Edit track' ) }
-				</span>
-				<span>
-					{ __( 'File' ) }: <b>{ fileName }</b>
-				</span>
-				<Grid columns={ 2 } gap={ 4 }>
-					<TextControl
+		<VStack
+			className="block-library-video-tracks-editor__single-track-editor"
+			spacing="4"
+		>
+			<span className="block-library-video-tracks-editor__single-track-editor-edit-track-label">
+				{ __( 'Edit track' ) }
+			</span>
+			<span>
+				{ __( 'File' ) }: <b>{ fileName }</b>
+			</span>
+			<Grid columns={ 2 } gap={ 4 }>
+				<TextControl
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+					onChange={ ( newLabel ) =>
+						onChange( {
+							...track,
+							label: newLabel,
+						} )
+					}
+					label={ __( 'Label' ) }
+					value={ label }
+					help={ __( 'Title of track' ) }
+				/>
+				<TextControl
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+					onChange={ ( newSrcLang ) =>
+						onChange( {
+							...track,
+							srcLang: newSrcLang,
+						} )
+					}
+					label={ __( 'Source language' ) }
+					value={ srcLang }
+					help={ __( 'Language tag (en, fr, etc.)' ) }
+				/>
+			</Grid>
+			<VStack spacing="8">
+				<SelectControl
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+					className="block-library-video-tracks-editor__single-track-editor-kind-select"
+					options={ KIND_OPTIONS }
+					value={ kind }
+					label={ __( 'Kind' ) }
+					onChange={ ( newKind ) => {
+						onChange( {
+							...track,
+							kind: newKind,
+						} );
+					} }
+				/>
+				<HStack className="block-library-video-tracks-editor__single-track-editor-buttons-container">
+					<Button
 						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						onChange={ ( newLabel ) =>
-							onChange( {
-								...track,
-								label: newLabel,
-							} )
-						}
-						label={ __( 'Label' ) }
-						value={ label }
-						help={ __( 'Title of track' ) }
-					/>
-					<TextControl
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						onChange={ ( newSrcLang ) =>
-							onChange( {
-								...track,
-								srcLang: newSrcLang,
-							} )
-						}
-						label={ __( 'Source language' ) }
-						value={ srcLang }
-						help={ __( 'Language tag (en, fr, etc.)' ) }
-					/>
-				</Grid>
-				<VStack spacing="8">
-					<SelectControl
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						className="block-library-video-tracks-editor__single-track-editor-kind-select"
-						options={ KIND_OPTIONS }
-						value={ kind }
-						label={ __( 'Kind' ) }
-						onChange={ ( newKind ) => {
-							onChange( {
-								...track,
-								kind: newKind,
-							} );
+						variant="secondary"
+						onClick={ () => {
+							const changes = {};
+							let hasChanges = false;
+							if ( label === '' ) {
+								changes.label = __( 'English' );
+								hasChanges = true;
+							}
+							if ( srcLang === '' ) {
+								changes.srcLang = 'en';
+								hasChanges = true;
+							}
+							if ( track.kind === undefined ) {
+								changes.kind = DEFAULT_KIND;
+								hasChanges = true;
+							}
+							if ( hasChanges ) {
+								onChange( {
+									...track,
+									...changes,
+								} );
+							}
+							onClose();
 						} }
-					/>
-					<HStack className="block-library-video-tracks-editor__single-track-editor-buttons-container">
-						<Button
-							__next40pxDefaultSize
-							variant="secondary"
-							onClick={ () => {
-								const changes = {};
-								let hasChanges = false;
-								if ( label === '' ) {
-									changes.label = __( 'English' );
-									hasChanges = true;
-								}
-								if ( srcLang === '' ) {
-									changes.srcLang = 'en';
-									hasChanges = true;
-								}
-								if ( track.kind === undefined ) {
-									changes.kind = DEFAULT_KIND;
-									hasChanges = true;
-								}
-								if ( hasChanges ) {
-									onChange( {
-										...track,
-										...changes,
-									} );
-								}
-								onClose();
-							} }
-						>
-							{ __( 'Close' ) }
-						</Button>
-						<Button
-							__next40pxDefaultSize
-							isDestructive
-							variant="link"
-							onClick={ onRemove }
-						>
-							{ __( 'Remove track' ) }
-						</Button>
-					</HStack>
-				</VStack>
+					>
+						{ __( 'Close' ) }
+					</Button>
+					<Button
+						__next40pxDefaultSize
+						isDestructive
+						variant="link"
+						onClick={ onRemove }
+					>
+						{ __( 'Remove track' ) }
+					</Button>
+				</HStack>
 			</VStack>
-		</>
+		</VStack>
 	);
 }
 
