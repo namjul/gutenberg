@@ -207,17 +207,28 @@ export default function TracksEditor( { tracks = [], onChange } ) {
 			popoverProps={ {
 				ref: dropdownPopoverRef,
 			} }
-			renderToggle={ ( { isOpen, onToggle } ) => (
-				<ToolbarGroup>
-					<ToolbarButton
-						aria-expanded={ isOpen }
-						aria-haspopup="true"
-						onClick={ onToggle }
-					>
-						{ __( 'Text tracks' ) }
-					</ToolbarButton>
-				</ToolbarGroup>
-			) }
+			renderToggle={ ( { isOpen, onToggle } ) => {
+				const handleOnToggle = () => {
+					if ( ! isOpen ) {
+						// When the Popover opens make sure the initial view is
+						// always the track list rather than the edit track UI.
+						setTrackBeingEdited( null );
+					}
+					onToggle();
+				};
+
+				return (
+					<ToolbarGroup>
+						<ToolbarButton
+							aria-expanded={ isOpen }
+							aria-haspopup="true"
+							onClick={ handleOnToggle }
+						>
+							{ __( 'Text tracks' ) }
+						</ToolbarButton>
+					</ToolbarGroup>
+				);
+			} }
 			renderContent={ () => {
 				if ( trackBeingEdited !== null ) {
 					return (
