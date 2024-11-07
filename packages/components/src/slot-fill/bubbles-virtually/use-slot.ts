@@ -8,7 +8,7 @@ import { useObservableValue } from '@wordpress/compose';
  * Internal dependencies
  */
 import SlotFillContext from './slot-fill-context';
-import type { FillRef, SlotRef, FillProps, SlotKey } from '../types';
+import type { Rerenderable, SlotRef, FillProps, SlotKey } from '../types';
 
 export default function useSlot( name: SlotKey ) {
 	const registry = useContext( SlotFillContext );
@@ -20,9 +20,9 @@ export default function useSlot( name: SlotKey ) {
 				registry.updateSlot( name, ref, fillProps ),
 			unregisterSlot: ( ref: SlotRef ) =>
 				registry.unregisterSlot( name, ref ),
-			registerFill: ( ref: FillRef ) =>
+			registerFill: ( ref: Rerenderable ) =>
 				registry.registerFill( name, ref ),
-			unregisterFill: ( ref: FillRef ) =>
+			unregisterFill: ( ref: Rerenderable ) =>
 				registry.unregisterFill( name, ref ),
 		} ),
 		[ name, registry ]
