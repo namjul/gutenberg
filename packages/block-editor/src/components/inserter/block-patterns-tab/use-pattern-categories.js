@@ -14,6 +14,7 @@ import {
 	isPatternFiltered,
 	allPatternsCategory,
 	myPatternsCategory,
+	starterPatternsCategory,
 	INSERTER_PATTERN_TYPES,
 } from './utils';
 
@@ -67,6 +68,7 @@ export function usePatternCategories( rootClientId, sourceFilter = 'all' ) {
 				label: _x( 'Uncategorized' ),
 			} );
 		}
+		categories.unshift( starterPatternsCategory );
 		if (
 			filteredPatterns.some(
 				( pattern ) => pattern.type === INSERTER_PATTERN_TYPES.user
