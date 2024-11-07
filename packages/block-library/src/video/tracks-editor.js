@@ -40,39 +40,29 @@ const KIND_OPTIONS = [
 ];
 
 function TrackList( { tracks, onEditPress } ) {
-	let content;
-	if ( tracks.length === 0 ) {
-		content = (
-			<p className="block-library-video-tracks-editor__tracks-informative-message">
-				{ __(
-					'Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users.'
-				) }
-			</p>
-		);
-	} else {
-		content = tracks.map( ( track, index ) => {
-			return (
-				<HStack
-					key={ index }
-					className="block-library-video-tracks-editor__track-list-track"
+	const content = tracks.map( ( track, index ) => {
+		return (
+			<HStack
+				key={ index }
+				className="block-library-video-tracks-editor__track-list-track"
+			>
+				<span>{ track.label } </span>
+				<Button
+					__next40pxDefaultSize
+					variant="tertiary"
+					onClick={ () => onEditPress( index ) }
+					aria-label={ sprintf(
+						/* translators: %s: Label of the video text track e.g: "French subtitles" */
+						_x( 'Edit %s', 'text tracks' ),
+						track.label
+					) }
 				>
-					<span>{ track.label } </span>
-					<Button
-						__next40pxDefaultSize
-						variant="tertiary"
-						onClick={ () => onEditPress( index ) }
-						aria-label={ sprintf(
-							/* translators: %s: Label of the video text track e.g: "French subtitles" */
-							_x( 'Edit %s', 'text tracks' ),
-							track.label
-						) }
-					>
-						{ __( 'Edit' ) }
-					</Button>
-				</HStack>
-			);
-		} );
-	}
+					{ __( 'Edit' ) }
+				</Button>
+			</HStack>
+		);
+	} );
+
 	return (
 		<MenuGroup
 			label={ __( 'Text tracks' ) }
@@ -252,8 +242,21 @@ export default function TracksEditor( { tracks = [], onChange } ) {
 						/>
 					);
 				}
+
 				return (
 					<>
+						{ tracks.length === 0 && (
+							<div className="block-library-video-tracks-editor__tracks-informative-message">
+								<h2 className="block-library-video-tracks-editor__tracks-informative-message-title">
+									{ __( 'Text tracks' ) }
+								</h2>
+								<p className="block-library-video-tracks-editor__tracks-informative-message-description">
+									{ __(
+										'Tracks can be subtitles, captions, chapters, or descriptions. They help make your content more accessible to a wider range of users.'
+									) }
+								</p>
+							</div>
+						) }
 						<NavigableMenu>
 							<TrackList
 								tracks={ tracks }
