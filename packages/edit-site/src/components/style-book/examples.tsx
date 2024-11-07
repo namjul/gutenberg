@@ -115,7 +115,16 @@ pieces of information. In terms of formatting, paragraphs in websites are common
 			createBlock(
 				'core/group',
 				{
-					layout: { type: 'grid', columnCount: 2 },
+					layout: {
+						type: 'grid',
+						columnCount: 2,
+						minimumColumnWidth: '12rem',
+					},
+					style: {
+						spacing: {
+							blockGap: '1.5rem',
+						},
+					},
 				},
 				[ firstParagraphBlock, secondParagraphBlock ]
 			),
