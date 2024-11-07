@@ -133,7 +133,15 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 				<HStack className="block-library-video-tracks-editor__single-track-editor-buttons-container">
 					<Button
 						__next40pxDefaultSize
-						variant="secondary"
+						isDestructive
+						variant="link"
+						onClick={ onRemove }
+					>
+						{ __( 'Remove track' ) }
+					</Button>
+					<Button
+						__next40pxDefaultSize
+						variant="primary"
 						onClick={ () => {
 							const changes = {};
 							let hasChanges = false;
@@ -158,15 +166,7 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 							onClose();
 						} }
 					>
-						{ __( 'Close' ) }
-					</Button>
-					<Button
-						__next40pxDefaultSize
-						isDestructive
-						variant="link"
-						onClick={ onRemove }
-					>
-						{ __( 'Remove track' ) }
+						{ __( 'Apply' ) }
 					</Button>
 				</HStack>
 			</VStack>
