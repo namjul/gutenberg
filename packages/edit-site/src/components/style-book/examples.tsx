@@ -98,12 +98,14 @@ function getLandingBlockExamples(
 		level: 1,
 	} );
 	const firstParagraphBlock = createBlock( 'core/paragraph', {
-		content: `A paragraph in a website refers to a distinct block of text that is used to present and organize information. It is a fundamental unit of content in web design and is typically
-composed of a group of related sentences or thoughts focused on a particular topic or idea. Paragraphs play a crucial role in improving the readability and user experience of a website. They break down the`,
+		content: __(
+			`A paragraph in a website refers to a distinct block of text that is used to present and organize information. It is a fundamental unit of content in web design and is typically composed of a group of related sentences or thoughts focused on a particular topic or idea. Paragraphs play a crucial role in improving the readability and user experience of a website. They break down the`
+		),
 	} );
 	const secondParagraphBlock = createBlock( 'core/paragraph', {
-		content: `text into smaller, manageable chunks, allowing readers to scan and comprehend the content more easily. Additionally, paragraphs help structure the flow of information and provide logical breaks between different concepts or
-pieces of information. In terms of formatting, paragraphs in websites are commonly denoted by a vertical gap or indentation between each block`,
+		content: __(
+			`text into smaller, manageable chunks, allowing readers to scan and comprehend the content more easily. Additionally, paragraphs help structure the flow of information and provide logical breaks between different concepts or pieces of information. In terms of formatting, paragraphs in websites are commonly denoted by a vertical gap or indentation between each block`
+		),
 	} );
 
 	const textExample = {
