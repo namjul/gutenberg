@@ -252,6 +252,10 @@ export const STYLE_BOOK_IFRAME_STYLES = `
 	}
 
 	.edit-site-style-book__example-preview {
+		width: 100%;
+	}
+	
+	.is-wide .edit-site-style-book__example-preview {
 		width: calc(100% - 120px);
 	}
 
