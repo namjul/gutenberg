@@ -108,42 +108,17 @@ export type SlotFillProviderProps = {
 	passthrough?: boolean;
 };
 
-export type SlotFillBubblesVirtuallySlotRef = RefObject< HTMLElement >;
-export type SlotFillBubblesVirtuallyFillRef = MutableRefObject< {
-	rerender: () => void;
-} >;
+export type SlotRef = RefObject< HTMLElement >;
+export type FillRef = MutableRefObject< { rerender: () => void } >;
 
 export type SlotFillBubblesVirtuallyContext = {
-	slots: ObservableMap<
-		SlotKey,
-		{
-			ref: SlotFillBubblesVirtuallySlotRef;
-			fillProps: FillProps;
-		}
-	>;
-	fills: ObservableMap< SlotKey, SlotFillBubblesVirtuallyFillRef[] >;
-	registerSlot: (
-		name: SlotKey,
-		ref: SlotFillBubblesVirtuallySlotRef,
-		fillProps: FillProps
-	) => void;
-	unregisterSlot: (
-		name: SlotKey,
-		ref: SlotFillBubblesVirtuallySlotRef
-	) => void;
-	updateSlot: (
-		name: SlotKey,
-		ref: SlotFillBubblesVirtuallySlotRef,
-		fillProps: FillProps
-	) => void;
-	registerFill: (
-		name: SlotKey,
-		ref: SlotFillBubblesVirtuallyFillRef
-	) => void;
-	unregisterFill: (
-		name: SlotKey,
-		ref: SlotFillBubblesVirtuallyFillRef
-	) => void;
+	slots: ObservableMap< SlotKey, { ref: SlotRef; fillProps: FillProps } >;
+	fills: ObservableMap< SlotKey, FillRef[] >;
+	registerSlot: ( name: SlotKey, ref: SlotRef, fillProps: FillProps ) => void;
+	unregisterSlot: ( name: SlotKey, ref: SlotRef ) => void;
+	updateSlot: ( name: SlotKey, ref: SlotRef, fillProps: FillProps ) => void;
+	registerFill: ( name: SlotKey, ref: FillRef ) => void;
+	unregisterFill: ( name: SlotKey, ref: FillRef ) => void;
 
 	/**
 	 * This helps the provider know if it's using the default context value or not.
